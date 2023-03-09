@@ -61,7 +61,7 @@ def get_children(parent_id) -> list:
 def append_to_jsonl_file(data, file):
     """ Appends json dictionary as new line to file """
     with open(file, 'a+') as out_file:
-        out_file.write(json.dumps(data, indent=4))
+        out_file.write(json.dumps(data, indent=4)+',')
 
 with open('/Users/azizamirsaidova/Documents/GitHub/answer_classification/inputs/resources_dir/wikidata_qid_label.csv', newline='') as vocab_file:
     from collections import defaultdict
@@ -74,7 +74,9 @@ with open('/Users/azizamirsaidova/Documents/GitHub/answer_classification/inputs/
         level = get_entity_level_bfs(row[0])
         get_entity_for_qid[row[0]] = {row[0]: row[1], 'level': level, 'children': children}
         if level != 0 or (len(children) != 0):
-            append_to_jsonl_file( get_entity_for_qid[row[0]], "hierarchy.json")
+            print(row[0], row[1])
+            append_to_jsonl_file(get_entity_for_qid[row[0]], "hierarchy2.json")
+
         
             
         # write to json file
