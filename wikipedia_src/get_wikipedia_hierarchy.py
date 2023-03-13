@@ -63,7 +63,7 @@ def append_to_jsonl_file(data, file):
     with open(file, 'a+') as out_file:
         out_file.write(json.dumps(data, indent=4)+',')
 
-with open('/Users/azizamirsaidova/Documents/GitHub/answer_classification/inputs/resources_dir/wikidata_qid_label.csv', newline='') as vocab_file:
+with open('wikidata_qid_label.csv', newline='') as vocab_file:
     from collections import defaultdict
     label_to_id = csv.reader(vocab_file, delimiter=',')
     next(label_to_id)
@@ -75,19 +75,6 @@ with open('/Users/azizamirsaidova/Documents/GitHub/answer_classification/inputs/
         get_entity_for_qid[row[0]] = {row[0]: row[1], 'level': level, 'children': children}
         if level != 0 or (len(children) != 0):
             print(row[0], row[1])
-            append_to_jsonl_file(get_entity_for_qid[row[0]], "hierarchy2.json")
+            append_to_jsonl_file(get_entity_for_qid[row[0]], "hierarchy3.json")
 
-        
-            
-        # write to json file
-        #json_object = json.dumps(get_entity_for_qid[row[0]], indent=4)
-
-        # entries = []
-        # with open("hierarchy.json", "w") as outfile:
-        #     entries.append(get_entity_for_qid[row[0]])
-        #     json_entry = json.dumps(entries, indent = 4)
-        #     outfile.write(json_entry)
-        #     print(entries)
-        #     print("     -    -    -     ")
-        #     print(json_entry)
             
