@@ -1,38 +1,43 @@
 import json
+import csv
 
-# Load hierarchy dataset
+# Load hierarchy data
 with open('hierarchy2.json', 'r') as f:
     hierarchy_data = json.load(f)
 
-# Create a dictionary to map qid to hierarchy level
-qid_to_level = {}
 for item in hierarchy_data:
     qid = list(item.keys())[0]
     level = item['level']
-    qid_to_level[qid] = level
+    children = item['children']
+    
 
-# Load qid labels dataset
+# Load Qid label data
+qid_labels = {}
 with open('wikidata_qid_label.csv', 'r') as f:
-    qid_labels_data = f.readlines()
-    print()
+    reader = csv.reader(f)
+    next(reader) # skip header row
+    for row in reader:
+        qid_labels[row[0]] = row[1]
 
-# Create a dictionary to map qid to label
-qid_to_label = {}
-for line in qid_labels_data:
-    qid, label, _ = line.strip().split(',')
-    qid_to_label[qid] = label
+# Load training data
+with open('task1_wikidata_train.json', 'r') as f:
+    train_data = json.load(f)
+    for item in train_data:
+        train_question = item['question']
 
-# Create a dictionary to map qid to hierarchy label
-qid_to_hierarchy_label = {}
-for qid in qid_to_label.keys():
-    if qid in qid_to_level.keys():
-        level = qid_to_level[qid]
-        hierarchy_labels = hierarchy_data[level - 1][qid]['children']
-        hierarchy_labels.append(qid_to_label[qid])
-        qid_to_hierarchy_label[qid] = hierarchy_labels
-    else:
-        qid_to_hierarchy_label[qid] = [qid_to_label[qid]]
+# Find the closest matching qid label in the hierarchy
+best_match = None
+best_score = -1
+for child in children:
+    if child in qid_labels:
+        label = qid_labels[child]
+        score = len(set(train_question.split()).intersection(label.split()))
+        if score > best_score:
+            best_match = child
+            best_score = score
 
-# Example usage
-qid = 'Q184485'
-print(qid_to_hierarchy_label[qid])
+# Output the predicted answer type
+if best_match:
+    print("Predicted answer type:", qid_labels[best_match])
+else:
+    print("No matching qid label found in hierarchy.")
