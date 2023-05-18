@@ -72,9 +72,9 @@ if __name__ == '__main__':
     train_fname = '/Users/azizamirsaidova/Documents/GitHub/answer_classification/wikipedia_src/task1_wikidata_train.json'
     wikidata_df = pd.read_json(train_fname)
     wikidata_train_df = wikidata_df.sample(frac=0.9,random_state=0,axis=0)
-    dbpedia_test_df = wikidata_df[~wikidata_df.index.isin(wikidata_train_df.index)]
+    wikidata_test_df = wikidata_df[~wikidata_df.index.isin(wikidata_train_df.index)]
     print('train and val size: ',len(wikidata_train_df))
-    print('test size:',len(dbpedia_test_df))
+    print('test size:',len(wikidata_test_df))
     
     wikidata_train_df= wikidata_train_df[wikidata_train_df.category.notna()]
     wikidata_train_df= wikidata_train_df[wikidata_train_df['type'].notna()]
@@ -315,12 +315,7 @@ if __name__ == '__main__':
             b_labels = batch[2].to(device)
 
             with torch.no_grad():        
-
-                # Forward pass, calculate logit predictions.
-                # token_type_ids is the same as the "segment ids", which 
-                # differentiates sentence 1 and 2 in 2-sentence tasks.
-                # Get the "logits" output by the model. The "logits" are the output
-                # values prior to applying an activation function like the softmax.
+                
                 outputs= model(
                                 b_input_ids, 
                                 token_type_ids=None, 
@@ -370,7 +365,6 @@ if __name__ == '__main__':
 
     print("")
     print("Training complete!")
-
     print("Total training took {:} (h:mm:ss)".format(format_time(time.time()-total_t0)))
 
     # Display floats with two decimal places.
@@ -382,14 +376,8 @@ if __name__ == '__main__':
     # Use the 'epoch' as the row index.
     df_stats = df_stats.set_index('epoch')
 
-    output_dir = '../outputs/'
-    # Create output directory if needed
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-        
-    df_stats.to_csv(output_dir + 'df_resources_top_stats.csv',index=None)
-
-    models_dir = output_dir + 'BERT_resources_top/'
+    df_stats.to_csv('df_resources_top_stats.csv',index=None)
+    models_dir = 'BERT_resources_top/'
 
     # Create output directory if needed
     if not os.path.exists(models_dir):
