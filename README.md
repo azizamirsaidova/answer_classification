@@ -1,4 +1,4 @@
-## **Semantic Answer Type Prediction with BERT Classifier Using Wikidata**
+## **Answer Category and Type Prediction with BERT Classifier Using Wikidata**
 Answer type prediction aims to identify the types of answer results to filter out irrelevant results which particularly improves QA systems. Answers categorized into boolean (true/false), numeric and string data types.
 
 ### **Two stage workflow**
