@@ -3,6 +3,7 @@ import ssl
 import json
 from urllib.error import HTTPError
 from http.client import RemoteDisconnected
+from collections import defaultdict
 from wikidata.client import Client
 from SPARQLWrapper import SPARQLWrapper, JSON
 from SPARQLWrapper.SPARQLExceptions import QueryBadFormed, EndPointInternalError
@@ -64,7 +65,6 @@ def append_to_jsonl_file(data, file):
         out_file.write(json.dumps(data, indent=4)+',')
 
 with open('wikidata_qid_label.csv', newline='') as vocab_file:
-    from collections import defaultdict
     label_to_id = csv.reader(vocab_file, delimiter=',')
     next(label_to_id)
 
