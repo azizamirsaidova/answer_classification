@@ -6,4 +6,5 @@ Answer type prediction aims to identify the types of answer results to filter ou
 
 2. BERT Classifier applied to predict the general types for each question in resource category. 
 
+More can be found in [google slides:][https://docs.google.com/presentation/d/1__-XXAX7-g-kaIKAPNZPBGQpm3Uzpj3TvnvrUTjvf74/edit?usp=sharing]
 
